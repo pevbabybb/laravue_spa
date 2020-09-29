@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\task;
 
 class taskController extends Controller
@@ -78,8 +79,19 @@ class taskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(task $task)
     {
-        //
+        if($task ->delete()){
+            Storage::delete($task->image);
+            return response()->json([
+                'message' =>'delete task success',
+                'status_code'=>'200',
+            ],200);
+        }else{
+            return response()->json([
+                'message' =>'delete task erorr , try again',
+                'status_code'=>'500',
+            ],500);
+        }
     }
 }

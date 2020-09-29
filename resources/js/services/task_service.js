@@ -7,3 +7,7 @@ export function createTask(data){
 export function loadTasks(){
     return http().get('/task');
 }
+
+export function deleteTask(id){
+    return http().delete(`task/${id}`) 
+}

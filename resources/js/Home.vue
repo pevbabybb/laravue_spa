@@ -34,7 +34,7 @@
                                         </td>
                                         <td>
                                             <button class="btn btn-primary btn-sm">upload</button>
-                                            <button class="btn btn-danger btn-sm">delete</button>
+                                            <button class="btn btn-danger btn-sm" v-on:click="deleteTask(task)">delete</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -70,7 +70,7 @@
                     </div>
                     <hr>
                     <button type="button" class="btn btn-default" v-on:click="hideNewTaskModal">Cancel</button>
-                     <button type="submit" class="btn btn-primary">save</button>
+                     <button type="submit" class="btn btn-primary" >save</button>
                      
               </form>
             </div>
@@ -163,6 +163,10 @@ export default {
                     time: 5000
 
                 });
+                this.taskData = {
+                    name:'',
+                    image:''
+                };
 
             } catch(error){
                 console.log(error.response.status);
@@ -181,6 +185,20 @@ export default {
 
             }
         },
+        deleteTask: async function(task){
+           
+            if(!window.confirm(`delete ${task.name}`)){
+                return;
+            }
+            try {
+                await taskService.deleteTask(task.id);
+                this.tasks = this.tasks.filter(obj =>{
+                    return obj.id != task.id;
+                });
+            } catch (error) {
+                
+            }
+        }
 
 
     }
