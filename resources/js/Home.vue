@@ -33,7 +33,7 @@
                                           class="table-image"/>
                                         </td>
                                         <td>
-                                            <button class="btn btn-primary btn-sm">upload</button>
+                                           
                                             <button class="btn btn-danger btn-sm" v-on:click="deleteTask(task)">delete</button>
                                         </td>
                                     </tr>
