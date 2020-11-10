@@ -17,5 +17,3 @@ Vue.use(BootstrapVue);
 
 });
 Vue.config.productionTip = false
-
-

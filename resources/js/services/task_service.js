@@ -9,5 +9,10 @@ export function loadTasks(){
 }
 
 export function deleteTask(id){
-    return http().delete(`task/${id}`) 
+    return http().delete(`task/${id}`) ;
 }
+
+export function updateTask(id,data){
+    return http().post(`task/${id}`,data);
+}
+

@@ -19,5 +19,7 @@ use Illuminate\Support\Facades\Route;
 //});
 
 Route::resource('task', 'taskController');
+Route::resource('setting','settingController');
+Route::resource('relation','people_relationController');
 
 
