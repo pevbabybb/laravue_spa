@@ -7,3 +7,7 @@ export function loadRelation(){
 export function createRelation(data){
     return http().post('/relation', data);
 }
+
+export function deleteRelation(id){
+    return http().delete(`relation/${id}`);
+}

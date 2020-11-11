@@ -15,6 +15,7 @@
                        <!-- <span> ?task management</span> -->
                        <button class="btn btn-primary btn-sm ml-auto" v-on:click="showNewTaskModal"><span> create new </span></button>
                        <button class="btn btn-primary btn-sm ml-auto" v-on:click="showSettingModal"><span> setting </span></button>
+                       <button class="btn btn-primary btn-sm ml-auto" v-on:click="showRelationDataModal"><span> relation </span></button>
                        </div>
                         <div class="card-body">
                             <table class="table">
@@ -134,19 +135,19 @@
             <b-modal ref="editTaskModal" hide-footer title="Update task">
             <div class="d-block ">
               <form v-on:submit.prevent="updateTask"> 
-                    <div class="form-group">
-                      <div>
-                                    <my-switch v-model="switchValue4"/> 
-                                        <p style="display: inline-block" title="#">special day</p>
-                                </div>
-                                <div>
-                                    <my-switch v-model="switchValue5"/> 
-                                        <p style="display: inline-block" title="#">birht event</p>
-                                </div>     
-                               
+                   
+                        <div>
+                            <my-switch v-model="switchValue4"/> 
+                            <p style="display: inline-block" title="#">special day</p>
+                        </div>
+                        <div>
+                            <my-switch v-model="switchValue5"/> 
+                            <p style="display: inline-block" title="#">birht event</p>
+                            </div>     
+                                     
                         
                        
-                    </div>
+                   
                     
                     <hr>
                     <button type="button" class="btn btn-default" v-on:click="cancleEditTaskModal">Cancel</button>
@@ -159,41 +160,85 @@
             
             </b-modal>
 
+            <b-modal ref="relationDataModal" hide-footer title="relation">
+                <div class="d-block ">
+                <form > 
+                        <div class="form-group">
+                          
+                         <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <td>user1</td>
+                                        <td>user2</td>
+                                        <td>special day</td>
+                                        <td>action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="(relation,index) in relations" :key="index">
+                                        <td>{{index+1}}</td>
+                                        <td>{{relation.name1}}</td>
+                                        <td>{{relation.name2}}</td>
+                                        <td>{{relation.special_day}}</td>
+                                        <button class="btn btn-danger btn-sm" v-on:click="deleteRelation(relation)">delete</button>
+                                   
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div> 
+                        <button type="button" class="btn btn-default" v-on:click="hideRelationDataModal">Cancel</button>
+                        
+                           
+                    
+                </form>
+                </div>
+           
+            
+            </b-modal>           
             <b-modal ref="relationModal" hide-footer title="add relation">
                 <div class="d-block ">
                 <form v-on:submit.prevent="createRelation"> 
                         <div class="form-group">
-                          <div style="display: inline-block">
-                                <input type="date" v-model="relationData.special_day">
-                                <span>special day</span>
-                          </div>
+                            <div class="inline-block">
+                                <input type="date" v-model="relationData.special_day ">
+                                <span> special day</span>
+                            </div> 
                          <table class="table">
                                 <thead>
                                     <tr>
                                         <td>#</td>
                                         <td>name</td>
-                                     
+                                        
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(task,index) in tasks" :key="index">
                                         <td>{{index+1}}</td>
                                         <td>{{task.name}}</td>
-                                       
+                                        <td>
+                                            <input type="checkbox" :value="task" v-model="selected" @click="check_one" >
+                                            
+                                        </td>
+                                        
+                                   
                                     </tr>
                                 </tbody>
                             </table>
 
                         </div> 
                         <button type="button" class="btn btn-default" v-on:click="hideRelationModal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" >save</button>   
+                        <button type="submit" class="btn btn-primary" >save</button>
+                        
+                           
                     
                 </form>
                 </div>
            
             
-            </b-modal>
-             
+            </b-modal> 
              <Footer/>
               <FlashMessage position="right bottom"></FlashMessage>
     </main>
@@ -222,6 +267,7 @@ export default {
         Test,
         MySwitch,
     },
+    
     name:'task',
     data() {
         return {
@@ -253,18 +299,24 @@ export default {
                 user2:'',
             },
             addRelationData:{},
-          
+            selected:[],
            
             errors:{},
+            relExist:false,
+
             
             
         }
+        
+
     },
     
     mounted(){
         this.loadTasks();
         this.loadSetting();
+        this.loadRelation();
     },
+     
     methods:{
         editTask(){
             this.editTaskData = task;
@@ -289,6 +341,17 @@ export default {
                         });
                 
             }
+        },
+       check_one: function(){
+            this.selected = [];
+        },       
+
+        loadRelation: async function(){
+            const response = await relationService.loadRelation();
+            console.log(response);
+            this.relations = response.data.data;
+            console.log(this.relations);
+            
         },
         loadSetting:async function(){
             try {
@@ -357,24 +420,64 @@ export default {
         showSettingModal(){
             this.$refs.SettingModal.show();
         },
+        hideRelationModal(){
+            this.$refs.relationModal.hide();
+        },
+        
 
         addRelation(task){
             this.addRelationData = task;
             this.$refs.relationModal.show();
         },
 
-        hideRelationModal(){
-            this.$refs.relationModal.show()
+        
+        showRelationDataModal(){
+            this.$refs.relationDataModal.show();
+        },
+        hideRelationDataModal(){
+            this.$refs.relationDataModal.hide();
         },
 
         createRelation:async function(){
             let formData = new FormData();
             formData.append('user1', this.addRelationData.id);
-            formData.append('user2',4);
+            formData.append('user2',this.selected[0].id);
+            formData.append('name1', this.addRelationData.name);
+            formData.append('name2', this.selected[0].name);
             formData.append('special_day', this.relationData.special_day);
+            
+                for(let i = 0;i<this.relations.length;i++)
+                {
+                    let relation = this.relations[i];
+                   
+                    if((this.selected[0].id == relation.user1 && addRelationData.id == relation.user2 )||(this.selected[0].id == relation.user2 && this.addRelationData.id == relation.user1))
+                        {
+                            this.relExist = true;
+                        }
+                    
+                }
 
-            const response = await relationService.createRelation(formData);
+                if(this.relExist == false)
+                {
+                    const response = await relationService.createRelation(formData);
+                    this.$refs.relationModal.hide();
+                    this.flashMessage.success({message:'success create relation'})
+                    this.loadRelation();
+                }else{
+                  
+                    this.$refs.relationModal.hide();
+                    this.flashMessage.error({
+                        message: 'relation exist',
+                    }
+                        
+                    );
+                     
+                }
+                
+           
+            
         },
+        
        
         createTask: async function(){
             let formData =  new FormData();
@@ -410,6 +513,20 @@ export default {
 
             }
         },
+        deleteRelation: async function(relation){
+            if(!window.confirm('want to delete this relation ?')){
+                return;
+            }
+            try {
+                await relationService.deleteRelation(relation.id);
+                
+                this.relations = this.relations.filter(obj =>{
+                    return obj.id != relation.id;
+                });
+            } catch (error) {
+                
+            }
+        },
         deleteTask: async function(task){
            
             if(!window.confirm(`delete ${task.name}`)){
@@ -417,11 +534,13 @@ export default {
             }
             try {
                 await taskService.deleteTask(task.id);
+               
                 this.tasks = this.tasks.filter(obj =>{
                     return obj.id != task.id;
                 });
+               
             } catch (error) {
-                
+             
             }
         },
         hideEditTaskModal(){
@@ -509,7 +628,9 @@ export default {
         cancleEditTaskModal(){
             this.$refs.editTaskModal.hide();
             this.loadTasks();
+            
         },      
+        
                 
                 
                
@@ -525,5 +646,10 @@ export default {
   border-style: none;
   max-width: 200px;
   max-height: 200px;
+}
+
+modal-backdrop {
+    
+    background-color: rgba(0,0,0,0.5);
 }
 </style>

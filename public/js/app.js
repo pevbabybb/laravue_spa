@@ -2153,6 +2153,51 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2204,12 +2249,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         user2: ''
       },
       addRelationData: {},
-      errors: {}
+      selected: [],
+      errors: {},
+      relExist: false
     };
   },
   mounted: function mounted() {
     this.loadTasks();
     this.loadSetting();
+    this.loadRelation();
   },
   methods: (_methods = {
     editTask: function editTask() {
@@ -2261,19 +2309,52 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return loadTasks;
     }(),
-    loadSetting: function () {
-      var _loadSetting = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+    check_one: function check_one() {
+      this.selected = [];
+    },
+    loadRelation: function () {
+      var _loadRelation = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
         var response;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.prev = 0;
-                _context2.next = 3;
+                _context2.next = 2;
+                return _services_relation_service__WEBPACK_IMPORTED_MODULE_3__["loadRelation"]();
+
+              case 2:
+                response = _context2.sent;
+                console.log(response);
+                this.relations = response.data.data;
+                console.log(this.relations);
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function loadRelation() {
+        return _loadRelation.apply(this, arguments);
+      }
+
+      return loadRelation;
+    }(),
+    loadSetting: function () {
+      var _loadSetting = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.prev = 0;
+                _context3.next = 3;
                 return _services_setting_service__WEBPACK_IMPORTED_MODULE_2__["loadSetting"]();
 
               case 3:
-                response = _context2.sent;
+                response = _context3.sent;
                 console.log(response);
                 this.settings = response.data.data;
 
@@ -2296,12 +2377,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 }
 
                 console.log(this.settings);
-                _context2.next = 15;
+                _context3.next = 15;
                 break;
 
               case 12:
-                _context2.prev = 12;
-                _context2.t0 = _context2["catch"](0);
+                _context3.prev = 12;
+                _context3.t0 = _context3["catch"](0);
                 this.flashMessage.error({
                   message: 'event error',
                   time: 5000
@@ -2309,10 +2390,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 15:
               case "end":
-                return _context2.stop();
+                return _context3.stop();
             }
           }
-        }, _callee2, this, [[0, 12]]);
+        }, _callee3, this, [[0, 12]]);
       }));
 
       function loadSetting() {
@@ -2347,36 +2428,71 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     showSettingModal: function showSettingModal() {
       this.$refs.SettingModal.show();
     },
+    hideRelationModal: function hideRelationModal() {
+      this.$refs.relationModal.hide();
+    },
     addRelation: function addRelation(task) {
       this.addRelationData = task;
       this.$refs.relationModal.show();
     },
-    hideRelationModal: function hideRelationModal() {
-      this.$refs.relationModal.show();
+    showRelationDataModal: function showRelationDataModal() {
+      this.$refs.relationDataModal.show();
+    },
+    hideRelationDataModal: function hideRelationDataModal() {
+      this.$refs.relationDataModal.hide();
     },
     createRelation: function () {
-      var _createRelation = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
-        var formData, response;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+      var _createRelation = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+        var formData, i, relation, response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 formData = new FormData();
                 formData.append('user1', this.addRelationData.id);
-                formData.append('user2', 4);
+                formData.append('user2', this.selected[0].id);
+                formData.append('name1', this.addRelationData.name);
+                formData.append('name2', this.selected[0].name);
                 formData.append('special_day', this.relationData.special_day);
-                _context3.next = 6;
+
+                for (i = 0; i < this.relations.length; i++) {
+                  relation = this.relations[i];
+
+                  if (this.selected[0].id == relation.user1 && addRelationData.id == relation.user2 || this.selected[0].id == relation.user2 && this.addRelationData.id == relation.user1) {
+                    this.relExist = true;
+                  }
+                }
+
+                if (!(this.relExist == false)) {
+                  _context4.next = 16;
+                  break;
+                }
+
+                _context4.next = 10;
                 return _services_relation_service__WEBPACK_IMPORTED_MODULE_3__["createRelation"](formData);
 
-              case 6:
-                response = _context3.sent;
+              case 10:
+                response = _context4.sent;
+                this.$refs.relationModal.hide();
+                this.flashMessage.success({
+                  message: 'success create relation'
+                });
+                this.loadRelation();
+                _context4.next = 18;
+                break;
 
-              case 7:
+              case 16:
+                this.$refs.relationModal.hide();
+                this.flashMessage.error({
+                  message: 'relation exist'
+                });
+
+              case 18:
               case "end":
-                return _context3.stop();
+                return _context4.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee4, this);
       }));
 
       function createRelation() {
@@ -2386,41 +2502,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return createRelation;
     }(),
     createTask: function () {
-      var _createTask = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
+      var _createTask = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5() {
         var formData, response;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
                 formData = new FormData();
                 formData.append('name', this.taskData.name);
                 formData.append('image', this.taskData.image);
-                _context4.prev = 3;
-                _context4.next = 6;
+                _context5.prev = 3;
+                _context5.next = 6;
                 return _services_task_service__WEBPACK_IMPORTED_MODULE_1__["createTask"](formData);
 
               case 6:
-                response = _context4.sent;
+                response = _context5.sent;
                 this.tasks.unshift(response.data);
                 this.hideNewTaskModal();
                 this.flashMessage.success({
                   message: 'Success store image!',
                   time: 5000
                 });
-                _context4.next = 21;
+                _context5.next = 21;
                 break;
 
               case 12:
-                _context4.prev = 12;
-                _context4.t0 = _context4["catch"](3);
-                console.log(_context4.t0.response.status);
-                _context4.t1 = _context4.t0.response.status;
-                _context4.next = _context4.t1 === 422 ? 18 : 20;
+                _context5.prev = 12;
+                _context5.t0 = _context5["catch"](3);
+                console.log(_context5.t0.response.status);
+                _context5.t1 = _context5.t0.response.status;
+                _context5.next = _context5.t1 === 422 ? 18 : 20;
                 break;
 
               case 18:
-                this.errors = _context4.t0.response.data.errors;
-                return _context4.abrupt("break", 21);
+                this.errors = _context5.t0.response.data.errors;
+                return _context5.abrupt("break", 21);
 
               case 20:
                 this.flashMessage.error({
@@ -2430,10 +2546,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
               case 21:
               case "end":
-                return _context4.stop();
+                return _context5.stop();
             }
           }
-        }, _callee4, this, [[3, 12]]);
+        }, _callee5, this, [[3, 12]]);
       }));
 
       function createTask() {
@@ -2442,44 +2558,87 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       return createTask;
     }(),
-    deleteTask: function () {
-      var _deleteTask = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(task) {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+    deleteRelation: function () {
+      var _deleteRelation = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6(relation) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context6.prev = _context6.next) {
               case 0:
-                if (window.confirm("delete ".concat(task.name))) {
-                  _context5.next = 2;
+                if (window.confirm('want to delete this relation ?')) {
+                  _context6.next = 2;
                   break;
                 }
 
-                return _context5.abrupt("return");
+                return _context6.abrupt("return");
 
               case 2:
-                _context5.prev = 2;
-                _context5.next = 5;
+                _context6.prev = 2;
+                _context6.next = 5;
+                return _services_relation_service__WEBPACK_IMPORTED_MODULE_3__["deleteRelation"](relation.id);
+
+              case 5:
+                this.relations = this.relations.filter(function (obj) {
+                  return obj.id != relation.id;
+                });
+                _context6.next = 10;
+                break;
+
+              case 8:
+                _context6.prev = 8;
+                _context6.t0 = _context6["catch"](2);
+
+              case 10:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this, [[2, 8]]);
+      }));
+
+      function deleteRelation(_x) {
+        return _deleteRelation.apply(this, arguments);
+      }
+
+      return deleteRelation;
+    }(),
+    deleteTask: function () {
+      var _deleteTask = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(task) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                if (window.confirm("delete ".concat(task.name))) {
+                  _context7.next = 2;
+                  break;
+                }
+
+                return _context7.abrupt("return");
+
+              case 2:
+                _context7.prev = 2;
+                _context7.next = 5;
                 return _services_task_service__WEBPACK_IMPORTED_MODULE_1__["deleteTask"](task.id);
 
               case 5:
                 this.tasks = this.tasks.filter(function (obj) {
                   return obj.id != task.id;
                 });
-                _context5.next = 10;
+                _context7.next = 10;
                 break;
 
               case 8:
-                _context5.prev = 8;
-                _context5.t0 = _context5["catch"](2);
+                _context7.prev = 8;
+                _context7.t0 = _context7["catch"](2);
 
               case 10:
               case "end":
-                return _context5.stop();
+                return _context7.stop();
             }
           }
-        }, _callee5, this, [[2, 8]]);
+        }, _callee7, this, [[2, 8]]);
       }));
 
-      function deleteTask(_x) {
+      function deleteTask(_x2) {
         return _deleteTask.apply(this, arguments);
       }
 
@@ -2508,11 +2667,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     this.showEditTaskModal();
   }), _defineProperty(_methods, "updateTask", function () {
-    var _updateTask = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6() {
+    var _updateTask = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee8() {
       var formData, response;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee8$(_context8) {
         while (1) {
-          switch (_context6.prev = _context6.next) {
+          switch (_context8.prev = _context8.next) {
             case 0:
               formData = new FormData();
 
@@ -2527,19 +2686,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               formData.append('enable_birth_event', this.switchValue4);
               formData.append('enable_death_event', this.switchValue5);
               formData.append('_method', 'put');
-              _context6.next = 8;
+              _context8.next = 8;
               return _services_task_service__WEBPACK_IMPORTED_MODULE_1__["updateTask"](this.editTaskData.id, formData);
 
             case 8:
-              response = _context6.sent;
+              response = _context8.sent;
               this.$refs.editTaskModal.hide();
 
             case 10:
             case "end":
-              return _context6.stop();
+              return _context8.stop();
           }
         }
-      }, _callee6, this);
+      }, _callee8, this);
     }));
 
     function updateTask() {
@@ -2548,11 +2707,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     return updateTask;
   }()), _defineProperty(_methods, "updateSetting", function () {
-    var _updateSetting = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7() {
+    var _updateSetting = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee9() {
       var formData, response;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee9$(_context9) {
         while (1) {
-          switch (_context7.prev = _context7.next) {
+          switch (_context9.prev = _context9.next) {
             case 0:
               formData = new FormData();
 
@@ -2576,19 +2735,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 message: ' setting default updated !',
                 time: 5000
               });
-              _context7.next = 11;
+              _context9.next = 11;
               return _services_setting_service__WEBPACK_IMPORTED_MODULE_2__["updateSetting"](1, formData);
 
             case 11:
-              response = _context7.sent;
+              response = _context9.sent;
               this.$refs.SettingModal.hide();
 
             case 13:
             case "end":
-              return _context7.stop();
+              return _context9.stop();
           }
         }
-      }, _callee7, this);
+      }, _callee9, this);
     }));
 
     function updateSetting() {
@@ -50430,7 +50589,7 @@ exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader
 
 
 // module
-exports.push([module.i, "\nimg {\n  vertical-align: middle;\n  border-style: none;\n  max-width: 200px;\n  max-height: 200px;\n}\n", ""]);
+exports.push([module.i, "\nimg {\n  vertical-align: middle;\n  border-style: none;\n  max-width: 200px;\n  max-height: 200px;\n}\nmodal-backdrop {\n    \n    background-color: rgba(0,0,0,0.5);\n}\n", ""]);
 
 // exports
 
@@ -66540,6 +66699,15 @@ var render = function() {
                     on: { click: _vm.showSettingModal }
                   },
                   [_c("span", [_vm._v(" setting ")])]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary btn-sm ml-auto",
+                    on: { click: _vm.showRelationDataModal }
+                  },
+                  [_c("span", [_vm._v(" relation ")])]
                 )
               ]),
               _vm._v(" "),
@@ -66873,57 +67041,55 @@ var render = function() {
                 }
               },
               [
-                _c("div", { staticClass: "form-group" }, [
-                  _c(
-                    "div",
-                    [
-                      _c("my-switch", {
-                        model: {
-                          value: _vm.switchValue4,
-                          callback: function($$v) {
-                            _vm.switchValue4 = $$v
-                          },
-                          expression: "switchValue4"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "p",
-                        {
-                          staticStyle: { display: "inline-block" },
-                          attrs: { title: "#" }
+                _c(
+                  "div",
+                  [
+                    _c("my-switch", {
+                      model: {
+                        value: _vm.switchValue4,
+                        callback: function($$v) {
+                          _vm.switchValue4 = $$v
                         },
-                        [_vm._v("special day")]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    [
-                      _c("my-switch", {
-                        model: {
-                          value: _vm.switchValue5,
-                          callback: function($$v) {
-                            _vm.switchValue5 = $$v
-                          },
-                          expression: "switchValue5"
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c(
-                        "p",
-                        {
-                          staticStyle: { display: "inline-block" },
-                          attrs: { title: "#" }
+                        expression: "switchValue4"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "p",
+                      {
+                        staticStyle: { display: "inline-block" },
+                        attrs: { title: "#" }
+                      },
+                      [_vm._v("special day")]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  [
+                    _c("my-switch", {
+                      model: {
+                        value: _vm.switchValue5,
+                        callback: function($$v) {
+                          _vm.switchValue5 = $$v
                         },
-                        [_vm._v("birht event")]
-                      )
-                    ],
-                    1
-                  )
-                ]),
+                        expression: "switchValue5"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "p",
+                      {
+                        staticStyle: { display: "inline-block" },
+                        attrs: { title: "#" }
+                      },
+                      [_vm._v("birht event")]
+                    )
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c("hr"),
                 _vm._v(" "),
@@ -66951,6 +67117,76 @@ var render = function() {
       _c(
         "b-modal",
         {
+          ref: "relationDataModal",
+          attrs: { "hide-footer": "", title: "relation" }
+        },
+        [
+          _c("div", { staticClass: "d-block " }, [
+            _c("form", [
+              _c("div", { staticClass: "form-group" }, [
+                _c("table", { staticClass: "table" }, [
+                  _c("thead", [
+                    _c("tr", [
+                      _c("td", [_vm._v("#")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("user1")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("user2")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("special day")]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v("action")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.relations, function(relation, index) {
+                      return _c("tr", { key: index }, [
+                        _c("td", [_vm._v(_vm._s(index + 1))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(relation.name1))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(relation.name2))]),
+                        _vm._v(" "),
+                        _c("td", [_vm._v(_vm._s(relation.special_day))]),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger btn-sm",
+                            on: {
+                              click: function($event) {
+                                return _vm.deleteRelation(relation)
+                              }
+                            }
+                          },
+                          [_vm._v("delete")]
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-default",
+                  attrs: { type: "button" },
+                  on: { click: _vm.hideRelationDataModal }
+                },
+                [_vm._v("Cancel")]
+              )
+            ])
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "b-modal",
+        {
           ref: "relationModal",
           attrs: { "hide-footer": "", title: "add relation" }
         },
@@ -66968,14 +67204,14 @@ var render = function() {
               },
               [
                 _c("div", { staticClass: "form-group" }, [
-                  _c("div", { staticStyle: { display: "inline-block" } }, [
+                  _c("div", { staticClass: "inline-block" }, [
                     _c("input", {
                       directives: [
                         {
                           name: "model",
                           rawName: "v-model",
                           value: _vm.relationData.special_day,
-                          expression: "relationData.special_day"
+                          expression: "relationData.special_day "
                         }
                       ],
                       attrs: { type: "date" },
@@ -66994,7 +67230,7 @@ var render = function() {
                       }
                     }),
                     _vm._v(" "),
-                    _c("span", [_vm._v("special day")])
+                    _c("span", [_vm._v(" special day")])
                   ]),
                   _vm._v(" "),
                   _c("table", { staticClass: "table" }, [
@@ -67012,7 +67248,50 @@ var render = function() {
                         return _c("tr", { key: index }, [
                           _c("td", [_vm._v(_vm._s(index + 1))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(task.name))])
+                          _c("td", [_vm._v(_vm._s(task.name))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.selected,
+                                  expression: "selected"
+                                }
+                              ],
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                value: task,
+                                checked: Array.isArray(_vm.selected)
+                                  ? _vm._i(_vm.selected, task) > -1
+                                  : _vm.selected
+                              },
+                              on: {
+                                click: _vm.check_one,
+                                change: function($event) {
+                                  var $$a = _vm.selected,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = task,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        (_vm.selected = $$a.concat([$$v]))
+                                    } else {
+                                      $$i > -1 &&
+                                        (_vm.selected = $$a
+                                          .slice(0, $$i)
+                                          .concat($$a.slice($$i + 1)))
+                                    }
+                                  } else {
+                                    _vm.selected = $$c
+                                  }
+                                }
+                              }
+                            })
+                          ])
                         ])
                       }),
                       0
@@ -81472,13 +81751,14 @@ function httpFile() {
 /*!***************************************************!*\
   !*** ./resources/js/services/relation_service.js ***!
   \***************************************************/
-/*! exports provided: loadRelation, createRelation */
+/*! exports provided: loadRelation, createRelation, deleteRelation */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadRelation", function() { return loadRelation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createRelation", function() { return createRelation; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteRelation", function() { return deleteRelation; });
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./http_service */ "./resources/js/services/http_service.js");
 
 function loadRelation() {
@@ -81486,6 +81766,9 @@ function loadRelation() {
 }
 function createRelation(data) {
   return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])().post('/relation', data);
+}
+function deleteRelation(id) {
+  return Object(_http_service__WEBPACK_IMPORTED_MODULE_0__["http"])()["delete"]("relation/".concat(id));
 }
 
 /***/ }),

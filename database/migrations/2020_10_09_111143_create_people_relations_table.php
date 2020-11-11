@@ -17,9 +17,12 @@ class CreatePeopleRelationsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user1');
             $table->unsignedInteger('user2');
-            $table->foreign('user1')->references('id')->on('tasks');
-            $table->foreign('user2')->references('id')->on('tasks');
-            $table->dateTime('special_day');
+            $table->foreign('user1')->references('id')->on('tasks')->onDelete('cascade');
+            $table->foreign('user2')->references('id')->on('tasks')->onDelete('cascade');
+            $table->date('special_day');
+            $table->string('name1');
+            $table->string('name2');
+
             $table->timestamps();
         });
     }
