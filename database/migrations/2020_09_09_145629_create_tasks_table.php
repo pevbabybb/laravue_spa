@@ -19,11 +19,11 @@ class CreateTasksTable extends Migration
             $table->text('image');
             $table->boolean('is_death')->nullable();
             $table->boolean('is_display')->nullable();
-            $table->dateTime('date_of_birth')->nullable();
-            $table->dateTime('date_of_death')->nullable();
+            $table->date('date_of_birth')->nullable();
+            $table->date('date_of_death')->nullable();
             $table->boolean('enable_birth_event')->default('0');
             $table->boolean('enable_death_event')->default('0');
-            $table->dateTime('death_day')->nullable();
+            $table->date('death_day')->nullable();
             
             $table->timestamps();
         });

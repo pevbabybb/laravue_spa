@@ -33,10 +33,14 @@ class taskController extends Controller
         //
         $request ->validate([
             'name'=> 'required|min:3',
-            'image' => 'required|mimes:jpeg,png,jpg'
+            'image' => 'required|mimes:jpeg,png,jpg',
+            'date_of_birth'=>'required',
+            'date_of_death'=>'required',
         ]);
         $task = new task();
         $task ->name = $request ->name;
+        $task ->date_of_birth =$request->date_of_birth;
+        $task ->date_of_death =$request->date_of_death;
         $path = $request->file('image')->store('task_image');
 
         $task->image = $path;

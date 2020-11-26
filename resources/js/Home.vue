@@ -6,26 +6,29 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-10 pt-3">ADMIN </h1>
+                        <h1 class="mt-10 pt-3" style ="color: #212529">UIT </h1>
                         
  
                         </div>
                     <div class="card mb-3">
                        <div class="card-header">
                        <!-- <span> ?task management</span> -->
-                       <button class="btn btn-primary btn-sm ml-auto" v-on:click="showNewTaskModal"><span> create new </span></button>
-                       <button class="btn btn-primary btn-sm ml-auto" v-on:click="showSettingModal"><span> setting </span></button>
-                       <button class="btn btn-primary btn-sm ml-auto" v-on:click="showRelationDataModal"><span> relation </span></button>
+                       <button class="btn btn-primary btn-sm ml-auto" v-on:click="showNewTaskModal" title="Create"><i class="fas fa-plus-circle fa-2x"></i> </button>
+                       <button class="btn btn-primary btn-sm ml-auto" v-on:click="showSettingModal" title="Setting"><i class="fas fa-cog fa-2x"></i></button>
+                       <button class="btn btn-primary btn-sm ml-auto" v-on:click="showRelationDataModal" title="Relation Setting"><i class="fas fa-users-cog fa-2x"></i></button>
                        </div>
-                        <div class="card-body">
-                            <table class="table">
+                       <div class="limiter">
+                       <div class="container-table100">
+                       <div class="wrap-table100">
+                        <div div class="table100">
+                            <table>
                                 <thead>
                                     <tr>
-                                        <td>#</td>
-                                        <td>name</td>
-                                        <td style="text-align:center">image</td>
-                                        <td>birth</td>
-                                        <td>action</td>
+                                        <th ><b>No.</b></th>
+                                        <th><b>Name</b></th>
+                                        <th  style="text-align:center"><b>Image</b></th>
+                                        <th><b>Birthday/Deathday</b></th>
+                                        <th ><b>Options</b></th>
                                         
                                     </tr>
                                 </thead>
@@ -39,13 +42,16 @@
                                           class="table-image"/>
                                         </td>
                                         <td>
-                                            21/09/98
+                                           <span> {{task.date_of_birth}} </span>
+                                           <hr>
+                                           <span>{{task.date_of_death}}</span>
+                                           
                                         </td>
                                         <td>
                                            
-                                            <button class="btn btn-danger btn-sm" v-on:click="deleteTask(task)">delete</button>
-                                            <button class="btn btn-primary btn-sm" v-on:click="editTask(task)">update</button>
-                                            <button class="btn btn-info btn-sm" v-on:click="addRelation(task)">Rel</button>
+                                            <button class="btn btn-danger btn-sm" v-on:click="deleteTask(task)" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                                            <button class="btn btn-primary btn-sm" v-on:click="editTask(task)" title="Update"><i class="fas fa-cog"></i></i></button>
+                                            <button class="btn btn-info btn-sm" v-on:click="addRelation(task)" title="Relation Setting"><i class="fas fa-users-cog"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -54,7 +60,9 @@
                             
 
                         </div>
-
+                       </div>
+                       </div>
+                       </div>
                     </div>
                     
                 </main>
@@ -62,29 +70,38 @@
             </div>
         </div>
               
-             <b-modal ref="newTaskModal" hide-footer title="Add new task">
+             <b-modal ref="newTaskModal" hide-footer title="Create new">
             <div class="d-block ">
               <form v-on:submit.prevent="createTask"> 
                     <div class="form-group">
                           
-                        <label for="name">enter name</label>
-                        <input type="text"  v-model= "taskData.name" class="form-control" id="name" placeholder="dien zo" >
+                        <label for="name">Enter name</label>
+                        <input type="text"  v-model= "taskData.name" class="form-control" id="name" placeholder="Type here..." >
                         <div class="invalid-feedback" style="display:inline-block !important" v-if="errors.name">{{errors.name[0]}}</div>
+                        <div>
+                            <span>Birth day</span>
+                            <input    type="date" v-model=" taskData.birthDay" >
+                        <div class="invalid-feedback" style="display:inline-block !important" v-if="errors.date_of_birth">{{errors.date_of_birth[0]}}</div>
+                        </div>
+                        <br>
+                        <span >Death day</span>
+                        <input  type="date" v-model=" taskData.deathDay" >
+                        <div class="invalid-feedback" style="display:inline-block !important" v-if="errors.date_of_death">{{errors.date_of_death[0]}}</div>
                     </div>
                     
                      <div class="form-group">
-                        <label for="image">choose image</label>
+                        <label for="image">Choose image</label>
             
                         <div v-if="taskData.image.name">
                             <img src="" ref="newTaskImageDisplay" class="w-150px">
 
                         </div>
                         <input type="file" v-on:change="attachImage" ref="newTaskImage" class="form-control " id="image" >
-                        <div class="invalid-feedback" v-if="errors.image">{{errors.image[0]}}</div>
+                        <div class="invalid-feedback" style="display:inline-block !important" v-if="errors.image">{{errors.image[0]}}</div>
                     </div>
                     <hr>
                     <button type="button" class="btn btn-default" v-on:click="hideNewTaskModal">Cancel</button>
-                     <button type="submit" class="btn btn-primary" >save</button>
+                     <button type="submit" class="btn btn-primary" >Save</button>
                     
                      
               </form>
@@ -102,21 +119,21 @@
                                         <!-- setting test case -->
                                 <div>
                                     <my-switch v-model="switchValue1"/> 
-                                        <p style="display: inline-block" title="#">special day</p>
+                                        <p style="display: inline-block" title="Anniversary of special day">Anniversary of special day</p>
                                 </div>
                                 <div>
                                     <my-switch v-model="switchValue2"/> 
-                                        <p style="display: inline-block" title="#">birht event</p>
+                                        <p style="display: inline-block" title="Anniversary of birth day">Anniversary of birth day</p>
                                 </div>     
                                 <div>
                                     <my-switch v-model="switchValue3"/> 
-                                        <p style="display: inline-block" title="#">death day</p>
+                                        <p style="display: inline-block" title="Anniversary of death day">Anniversary of death day</p>
                                 </div>      
                            
                             </div>
                              
                         <button type="button" class="btn btn-default" v-on:click="cancelSetingModal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" >save</button>       
+                        <button type="submit" class="btn btn-primary" >Save</button>       
 
                             
                             
@@ -138,11 +155,11 @@
                    
                         <div>
                             <my-switch v-model="switchValue4"/> 
-                            <p style="display: inline-block" title="#">special day</p>
+                            <p style="display: inline-block" title="#">Anniversary of special day</p>
                         </div>
                         <div>
                             <my-switch v-model="switchValue5"/> 
-                            <p style="display: inline-block" title="#">birht event</p>
+                            <p style="display: inline-block" title="#">Anniversary of birth day</p>
                             </div>     
                                      
                         
@@ -151,7 +168,7 @@
                     
                     <hr>
                     <button type="button" class="btn btn-default" v-on:click="cancleEditTaskModal">Cancel</button>
-                     <button type="submit" class="btn btn-primary" >save</button>
+                     <button type="submit" class="btn btn-primary" >Save</button>
                     
                      
               </form>
@@ -168,11 +185,11 @@
                          <table class="table">
                                 <thead>
                                     <tr>
-                                        <td>#</td>
-                                        <td>user1</td>
-                                        <td>user2</td>
-                                        <td>special day</td>
-                                        <td>action</td>
+                                        <td>No.</td>
+                                        <td>Name .1</td>
+                                        <td>Name .2</td>
+                                        <td>Special day</td>
+                                        <td>Option</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -181,14 +198,14 @@
                                         <td>{{relation.name1}}</td>
                                         <td>{{relation.name2}}</td>
                                         <td>{{relation.special_day}}</td>
-                                        <button class="btn btn-danger btn-sm" v-on:click="deleteRelation(relation)">delete</button>
+                                        <button class="btn btn-danger btn-sm" v-on:click="deleteRelation(relation)" title="Delete"><i class="fas fa-trash-alt"></i></button>
                                    
                                     </tr>
                                 </tbody>
                             </table>
 
                         </div> 
-                        <button type="button" class="btn btn-default" v-on:click="hideRelationDataModal">Cancel</button>
+                       
                         
                            
                     
@@ -276,6 +293,7 @@ export default {
                 name:'',
                 image:'',
                 birthDay:'',
+                deathDay:'',
             },
             editTaskData:{},
             // property for setting default
@@ -483,6 +501,8 @@ export default {
             let formData =  new FormData();
             formData.append('name',this.taskData.name);
             formData.append('image',this.taskData.image);
+            formData.append('date_of_birth', this.taskData.birthDay);
+            formData.append('date_of_death', this.taskData.birthDay);
             
             
             try{
@@ -491,7 +511,7 @@ export default {
                 this.hideNewTaskModal();
                 this.flashMessage.success({
                     message: 'Success store image!',
-                    time: 5000
+                    time: 3000
 
                 });
                 
@@ -506,8 +526,8 @@ export default {
                 
                     default:
                         this.flashMessage.error({
-                            message: 'event error',
-                            time:5000
+                            message: 'load data error,check server',
+                            time:3000
                         });
                 }
 
@@ -641,6 +661,137 @@ export default {
 }
 </script>
 <style >
+
+@import url('https://use.fontawesome.com/releases/v5.13.0/css/all.css');
+
+.limiter {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.container-table100 {
+  width: 100%;
+  min-height: 100vh;
+  background: #c850c0;
+  background: -webkit-linear-gradient(45deg, #4158d0, #c850c0);
+  background: -o-linear-gradient(45deg, #4158d0, #c850c0);
+  background: -moz-linear-gradient(45deg, #4158d0, #c850c0);
+  background: linear-gradient(45deg, #4158d0, #c850c0);
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 33px 30px;
+}
+
+.wrap-table100 {
+  width: 1170px;
+}
+
+table {
+  border-spacing: 1;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+}
+table * {
+  position: relative;
+}
+table td, table th {
+  text-align: center;
+    padding-left: 50px;
+}
+table thead tr {
+  height: 60px;
+  background: #36304a;
+
+}
+table tbody tr {
+  height: 50px;
+}
+table tbody tr:last-child {
+  border: 0;
+}
+table td, table th {
+  text-align: left;
+}
+table td.l, table th.l {
+  text-align: right;
+}
+table td.c, table th.c {
+  text-align: center;
+}
+table td.r, table th.r {
+  text-align: center;
+}
+
+
+.table100-head th{
+  font-family:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+tbody tr {
+  font-family:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";;
+  font-size: 15px;
+  color: #808080;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+tbody tr:hover {
+  color: #555555;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.column1 {
+  width: 260px;
+  padding-left: 40px;
+}
+
+.column2 {
+  width: 160px;
+}
+
+.column3 {
+  width: 245px;
+}
+
+.column4 {
+  width: 110px;
+  text-align: right;
+}
+
+.column5 {
+  width: 170px;
+  text-align: right;
+}
+
+.column6 {
+  width: 222px;
+  text-align: right;
+  padding-right: 62px;
+}
+
+
     img {
   vertical-align: middle;
   border-style: none;

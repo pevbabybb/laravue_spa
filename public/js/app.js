@@ -2198,6 +2198,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2221,7 +2238,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       taskData: {
         name: '',
         image: '',
-        birthDay: ''
+        birthDay: '',
+        deathDay: ''
       },
       editTaskData: {},
       // property for setting default
@@ -2511,45 +2529,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 formData = new FormData();
                 formData.append('name', this.taskData.name);
                 formData.append('image', this.taskData.image);
-                _context5.prev = 3;
-                _context5.next = 6;
+                formData.append('date_of_birth', this.taskData.birthDay);
+                formData.append('date_of_death', this.taskData.birthDay);
+                _context5.prev = 5;
+                _context5.next = 8;
                 return _services_task_service__WEBPACK_IMPORTED_MODULE_1__["createTask"](formData);
 
-              case 6:
+              case 8:
                 response = _context5.sent;
                 this.tasks.unshift(response.data);
                 this.hideNewTaskModal();
                 this.flashMessage.success({
                   message: 'Success store image!',
-                  time: 5000
+                  time: 3000
                 });
-                _context5.next = 21;
+                _context5.next = 23;
                 break;
 
-              case 12:
-                _context5.prev = 12;
-                _context5.t0 = _context5["catch"](3);
+              case 14:
+                _context5.prev = 14;
+                _context5.t0 = _context5["catch"](5);
                 console.log(_context5.t0.response.status);
                 _context5.t1 = _context5.t0.response.status;
-                _context5.next = _context5.t1 === 422 ? 18 : 20;
+                _context5.next = _context5.t1 === 422 ? 20 : 22;
                 break;
 
-              case 18:
-                this.errors = _context5.t0.response.data.errors;
-                return _context5.abrupt("break", 21);
-
               case 20:
+                this.errors = _context5.t0.response.data.errors;
+                return _context5.abrupt("break", 23);
+
+              case 22:
                 this.flashMessage.error({
-                  message: 'event error',
-                  time: 5000
+                  message: 'load data error,check server',
+                  time: 3000
                 });
 
-              case 21:
+              case 23:
               case "end":
                 return _context5.stop();
             }
           }
-        }, _callee5, this, [[3, 12]]);
+        }, _callee5, this, [[5, 14]]);
       }));
 
       function createTask() {
@@ -50586,10 +50606,10 @@ exports.push([module.i, "/*!\n * Bootstrap v4.5.2 (https://getbootstrap.com/)\n 
 
 exports = module.exports = __webpack_require__(/*! ../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
 // imports
-
+exports.push([module.i, "@import url(https://use.fontawesome.com/releases/v5.13.0/css/all.css);", ""]);
 
 // module
-exports.push([module.i, "\nimg {\n  vertical-align: middle;\n  border-style: none;\n  max-width: 200px;\n  max-height: 200px;\n}\nmodal-backdrop {\n    \n    background-color: rgba(0,0,0,0.5);\n}\n", ""]);
+exports.push([module.i, "\n.limiter {\r\n  width: 100%;\r\n  margin: 0 auto;\n}\n.container-table100 {\r\n  width: 100%;\r\n  min-height: 100vh;\r\n  background: #c850c0;\r\n  background: linear-gradient(45deg, #4158d0, #c850c0);\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  flex-wrap: wrap;\r\n  padding: 33px 30px;\n}\n.wrap-table100 {\r\n  width: 1170px;\n}\ntable {\r\n  border-spacing: 1;\r\n  border-collapse: collapse;\r\n  background: white;\r\n  border-radius: 10px;\r\n  overflow: hidden;\r\n  width: 100%;\r\n  margin: 0 auto;\r\n  position: relative;\r\n  text-align: center;\n}\ntable * {\r\n  position: relative;\n}\ntable td, table th {\r\n  text-align: center;\r\n    padding-left: 50px;\n}\ntable thead tr {\r\n  height: 60px;\r\n  background: #36304a;\n}\ntable tbody tr {\r\n  height: 50px;\n}\ntable tbody tr:last-child {\r\n  border: 0;\n}\ntable td, table th {\r\n  text-align: left;\n}\ntable td.l, table th.l {\r\n  text-align: right;\n}\ntable td.c, table th.c {\r\n  text-align: center;\n}\ntable td.r, table th.r {\r\n  text-align: center;\n}\n.table100-head th{\r\n  font-family:  -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";\r\n  font-size: 18px;\r\n  color: #fff;\r\n  line-height: 1.2;\r\n  font-weight: unset;\n}\ntbody tr:nth-child(even) {\r\n  background-color: #f5f5f5;\n}\ntbody tr {\r\n  font-family:  -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\";;\r\n  font-size: 15px;\r\n  color: #808080;\r\n  line-height: 1.2;\r\n  font-weight: unset;\n}\ntbody tr:hover {\r\n  color: #555555;\r\n  background-color: #f5f5f5;\r\n  cursor: pointer;\n}\n.column1 {\r\n  width: 260px;\r\n  padding-left: 40px;\n}\n.column2 {\r\n  width: 160px;\n}\n.column3 {\r\n  width: 245px;\n}\n.column4 {\r\n  width: 110px;\r\n  text-align: right;\n}\n.column5 {\r\n  width: 170px;\r\n  text-align: right;\n}\n.column6 {\r\n  width: 222px;\r\n  text-align: right;\r\n  padding-right: 62px;\n}\nimg {\r\n  vertical-align: middle;\r\n  border-style: none;\r\n  max-width: 200px;\r\n  max-height: 200px;\n}\nmodal-backdrop {\r\n    \r\n    background-color: rgba(0,0,0,0.5);\n}\r\n", ""]);
 
 // exports
 
@@ -66687,105 +66707,121 @@ var render = function() {
                   "button",
                   {
                     staticClass: "btn btn-primary btn-sm ml-auto",
+                    attrs: { title: "Create" },
                     on: { click: _vm.showNewTaskModal }
                   },
-                  [_c("span", [_vm._v(" create new ")])]
+                  [_c("i", { staticClass: "fas fa-plus-circle fa-2x" })]
                 ),
                 _vm._v(" "),
                 _c(
                   "button",
                   {
                     staticClass: "btn btn-primary btn-sm ml-auto",
+                    attrs: { title: "Setting" },
                     on: { click: _vm.showSettingModal }
                   },
-                  [_c("span", [_vm._v(" setting ")])]
+                  [_c("i", { staticClass: "fas fa-cog fa-2x" })]
                 ),
                 _vm._v(" "),
                 _c(
                   "button",
                   {
                     staticClass: "btn btn-primary btn-sm ml-auto",
+                    attrs: { title: "Relation Setting" },
                     on: { click: _vm.showRelationDataModal }
                   },
-                  [_c("span", [_vm._v(" relation ")])]
+                  [_c("i", { staticClass: "fas fa-users-cog fa-2x" })]
                 )
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "card-body" }, [
-                _c("table", { staticClass: "table" }, [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _c(
-                    "tbody",
-                    _vm._l(_vm.tasks, function(task, index) {
-                      return _c("tr", { key: index }, [
-                        _c("td", [_vm._v(_vm._s(index + 1))]),
+              _c("div", { staticClass: "limiter" }, [
+                _c("div", { staticClass: "container-table100" }, [
+                  _c("div", { staticClass: "wrap-table100" }, [
+                    _c("div", { staticClass: "table100", attrs: { div: "" } }, [
+                      _c("table", [
+                        _vm._m(1),
                         _vm._v(" "),
-                        _c("td", [_vm._v(_vm._s(task.name))]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c("img", {
-                            staticClass: "table-image",
-                            attrs: {
-                              src:
-                                _vm.$store.state.serverPath +
-                                "/storage/" +
-                                task.image,
-                              alt: task.name
-                            }
-                          })
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _vm._v(
-                            "\n                                        21/09/98\n                                    "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("td", [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger btn-sm",
-                              on: {
-                                click: function($event) {
-                                  return _vm.deleteTask(task)
-                                }
-                              }
-                            },
-                            [_vm._v("delete")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary btn-sm",
-                              on: {
-                                click: function($event) {
-                                  return _vm.editTask(task)
-                                }
-                              }
-                            },
-                            [_vm._v("update")]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-info btn-sm",
-                              on: {
-                                click: function($event) {
-                                  return _vm.addRelation(task)
-                                }
-                              }
-                            },
-                            [_vm._v("Rel")]
-                          )
-                        ])
+                        _c(
+                          "tbody",
+                          _vm._l(_vm.tasks, function(task, index) {
+                            return _c("tr", { key: index }, [
+                              _c("td", [_vm._v(_vm._s(index + 1))]),
+                              _vm._v(" "),
+                              _c("td", [_vm._v(_vm._s(task.name))]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("img", {
+                                  staticClass: "table-image",
+                                  attrs: {
+                                    src:
+                                      _vm.$store.state.serverPath +
+                                      "/storage/" +
+                                      task.image,
+                                    alt: task.name
+                                  }
+                                })
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c("span", [
+                                  _vm._v(" " + _vm._s(task.date_of_birth) + " ")
+                                ]),
+                                _vm._v(" "),
+                                _c("hr"),
+                                _vm._v(" "),
+                                _c("span", [_vm._v(_vm._s(task.date_of_death))])
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-danger btn-sm",
+                                    attrs: { title: "Delete" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.deleteTask(task)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "fas fa-trash-alt" })]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-primary btn-sm",
+                                    attrs: { title: "Update" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.editTask(task)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "fas fa-cog" })]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-info btn-sm",
+                                    attrs: { title: "Relation Setting" },
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.addRelation(task)
+                                      }
+                                    }
+                                  },
+                                  [_c("i", { staticClass: "fas fa-users-cog" })]
+                                )
+                              ])
+                            ])
+                          }),
+                          0
+                        )
                       ])
-                    }),
-                    0
-                  )
+                    ])
+                  ])
                 ])
               ])
             ])
@@ -66797,7 +66833,7 @@ var render = function() {
         "b-modal",
         {
           ref: "newTaskModal",
-          attrs: { "hide-footer": "", title: "Add new task" }
+          attrs: { "hide-footer": "", title: "Create new" }
         },
         [
           _c("div", { staticClass: "d-block " }, [
@@ -66814,7 +66850,7 @@ var render = function() {
               [
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "name" } }, [
-                    _vm._v("enter name")
+                    _vm._v("Enter name")
                   ]),
                   _vm._v(" "),
                   _c("input", {
@@ -66827,7 +66863,11 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "text", id: "name", placeholder: "dien zo" },
+                    attrs: {
+                      type: "text",
+                      id: "name",
+                      placeholder: "Type here..."
+                    },
                     domProps: { value: _vm.taskData.name },
                     on: {
                       input: function($event) {
@@ -66848,12 +66888,88 @@ var render = function() {
                         },
                         [_vm._v(_vm._s(_vm.errors.name[0]))]
                       )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("div", [
+                    _c("span", [_vm._v("Birth day")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.taskData.birthDay,
+                          expression: " taskData.birthDay"
+                        }
+                      ],
+                      attrs: { type: "date" },
+                      domProps: { value: _vm.taskData.birthDay },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.taskData,
+                            "birthDay",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _vm.errors.date_of_birth
+                      ? _c(
+                          "div",
+                          {
+                            staticClass: "invalid-feedback",
+                            staticStyle: { display: "inline-block !important" }
+                          },
+                          [_vm._v(_vm._s(_vm.errors.date_of_birth[0]))]
+                        )
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("span", [_vm._v("Death day")]),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.taskData.deathDay,
+                        expression: " taskData.deathDay"
+                      }
+                    ],
+                    attrs: { type: "date" },
+                    domProps: { value: _vm.taskData.deathDay },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.taskData, "deathDay", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _vm.errors.date_of_death
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "invalid-feedback",
+                          staticStyle: { display: "inline-block !important" }
+                        },
+                        [_vm._v(_vm._s(_vm.errors.date_of_death[0]))]
+                      )
                     : _vm._e()
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "form-group" }, [
                   _c("label", { attrs: { for: "image" } }, [
-                    _vm._v("choose image")
+                    _vm._v("Choose image")
                   ]),
                   _vm._v(" "),
                   _vm.taskData.image.name
@@ -66874,9 +66990,14 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _vm.errors.image
-                    ? _c("div", { staticClass: "invalid-feedback" }, [
-                        _vm._v(_vm._s(_vm.errors.image[0]))
-                      ])
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "invalid-feedback",
+                          staticStyle: { display: "inline-block !important" }
+                        },
+                        [_vm._v(_vm._s(_vm.errors.image[0]))]
+                      )
                     : _vm._e()
                 ]),
                 _vm._v(" "),
@@ -66895,7 +67016,7 @@ var render = function() {
                 _c(
                   "button",
                   { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-                  [_vm._v("save")]
+                  [_vm._v("Save")]
                 )
               ]
             )
@@ -66938,9 +67059,9 @@ var render = function() {
                           "p",
                           {
                             staticStyle: { display: "inline-block" },
-                            attrs: { title: "#" }
+                            attrs: { title: "Anniversary of special day" }
                           },
-                          [_vm._v("special day")]
+                          [_vm._v("Anniversary of special day")]
                         )
                       ],
                       1
@@ -66963,9 +67084,9 @@ var render = function() {
                           "p",
                           {
                             staticStyle: { display: "inline-block" },
-                            attrs: { title: "#" }
+                            attrs: { title: "Anniversary of birth day" }
                           },
-                          [_vm._v("birht event")]
+                          [_vm._v("Anniversary of birth day")]
                         )
                       ],
                       1
@@ -66988,9 +67109,9 @@ var render = function() {
                           "p",
                           {
                             staticStyle: { display: "inline-block" },
-                            attrs: { title: "#" }
+                            attrs: { title: "Anniversary of death day" }
                           },
-                          [_vm._v("death day")]
+                          [_vm._v("Anniversary of death day")]
                         )
                       ],
                       1
@@ -67013,7 +67134,7 @@ var render = function() {
                       staticClass: "btn btn-primary",
                       attrs: { type: "submit" }
                     },
-                    [_vm._v("save")]
+                    [_vm._v("Save")]
                   )
                 ])
               ]
@@ -67060,7 +67181,7 @@ var render = function() {
                         staticStyle: { display: "inline-block" },
                         attrs: { title: "#" }
                       },
-                      [_vm._v("special day")]
+                      [_vm._v("Anniversary of special day")]
                     )
                   ],
                   1
@@ -67085,7 +67206,7 @@ var render = function() {
                         staticStyle: { display: "inline-block" },
                         attrs: { title: "#" }
                       },
-                      [_vm._v("birht event")]
+                      [_vm._v("Anniversary of birth day")]
                     )
                   ],
                   1
@@ -67106,7 +67227,7 @@ var render = function() {
                 _c(
                   "button",
                   { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-                  [_vm._v("save")]
+                  [_vm._v("Save")]
                 )
               ]
             )
@@ -67127,15 +67248,15 @@ var render = function() {
                 _c("table", { staticClass: "table" }, [
                   _c("thead", [
                     _c("tr", [
-                      _c("td", [_vm._v("#")]),
+                      _c("td", [_vm._v("No.")]),
                       _vm._v(" "),
-                      _c("td", [_vm._v("user1")]),
+                      _c("td", [_vm._v("Name .1")]),
                       _vm._v(" "),
-                      _c("td", [_vm._v("user2")]),
+                      _c("td", [_vm._v("Name .2")]),
                       _vm._v(" "),
-                      _c("td", [_vm._v("special day")]),
+                      _c("td", [_vm._v("Special day")]),
                       _vm._v(" "),
-                      _c("td", [_vm._v("action")])
+                      _c("td", [_vm._v("Option")])
                     ])
                   ]),
                   _vm._v(" "),
@@ -67155,30 +67276,21 @@ var render = function() {
                           "button",
                           {
                             staticClass: "btn btn-danger btn-sm",
+                            attrs: { title: "Delete" },
                             on: {
                               click: function($event) {
                                 return _vm.deleteRelation(relation)
                               }
                             }
                           },
-                          [_vm._v("delete")]
+                          [_c("i", { staticClass: "fas fa-trash-alt" })]
                         )
                       ])
                     }),
                     0
                   )
                 ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-default",
-                  attrs: { type: "button" },
-                  on: { click: _vm.hideRelationDataModal }
-                },
-                [_vm._v("Cancel")]
-              )
+              ])
             ])
           ])
         ]
@@ -67333,7 +67445,11 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "container-fluid" }, [
-      _c("h1", { staticClass: "mt-10 pt-3" }, [_vm._v("ADMIN ")])
+      _c(
+        "h1",
+        { staticClass: "mt-10 pt-3", staticStyle: { color: "#212529" } },
+        [_vm._v("UIT ")]
+      )
     ])
   },
   function() {
@@ -67342,17 +67458,17 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("td", [_vm._v("#")]),
+        _c("th", [_c("b", [_vm._v("No.")])]),
         _vm._v(" "),
-        _c("td", [_vm._v("name")]),
+        _c("th", [_c("b", [_vm._v("Name")])]),
         _vm._v(" "),
-        _c("td", { staticStyle: { "text-align": "center" } }, [
-          _vm._v("image")
+        _c("th", { staticStyle: { "text-align": "center" } }, [
+          _c("b", [_vm._v("Image")])
         ]),
         _vm._v(" "),
-        _c("td", [_vm._v("birth")]),
+        _c("th", [_c("b", [_vm._v("Birthday/Deathday")])]),
         _vm._v(" "),
-        _c("td", [_vm._v("action")])
+        _c("th", [_c("b", [_vm._v("Options")])])
       ])
     ])
   }
