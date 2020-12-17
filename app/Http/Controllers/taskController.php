@@ -18,9 +18,12 @@ class taskController extends Controller
     public function index()
     {
         $tasks = task::orderBy('created_at','desc')-> paginate();
+       
         return response() ->json($tasks,200);
      
     }
+
+    
 
     /**
      * Store a newly created resource in storage.

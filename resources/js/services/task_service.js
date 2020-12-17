@@ -15,4 +15,6 @@ export function deleteTask(id){
 export function updateTask(id,data){
     return http().post(`task/${id}`,data);
 }
-
+export function getImage(){
+    return http().get('/image');
+}

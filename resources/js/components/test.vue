@@ -1,21 +1,53 @@
 <template>
-    <main>
-        <div class="row">
-            {{date}}
-        </div>
-        <div class="row" >
-            <input type="date" class="form-control" v-bind:value="date.toJSON().substring(0,10)" v-on:change="date =new Date($event.target.value)">
-        </div>
-    </main>
-    
+<div>
+    <transition-group name='fade' tag='div'>
+      <div v-for="i in [currentIndex]" :key='i'>
+        <img :src="currentImg" />
+      </div>
+    </transition-group>
+   
+  </div>
 </template>
+
 <script>
 export default {
-    
-    data(){
-        return {
-            date: new Date(),
-        }
+  name: 'Slider',
+  data() {
+    return {
+      images: [
+        'https://cdn.pixabay.com/photo/2015/12/12/15/24/amsterdam-1089646_1280.jpg',
+        'https://cdn.pixabay.com/photo/2016/02/17/23/03/usa-1206240_1280.jpg',
+        'https://cdn.pixabay.com/photo/2015/05/15/14/27/eiffel-tower-768501_1280.jpg',
+        'https://cdn.pixabay.com/photo/2016/12/04/19/30/berlin-cathedral-1882397_1280.jpg'
+        ],
+      timer: null,
+      currentIndex: 0,
     }
+  },
+  
+    mounted: function() {
+      this.startSlide();
+    },
+  
+    methods: {
+      startSlide: function() {
+        this.timer = setInterval(this.next, 4000);
+      },
+  
+  
+      next: function() {
+        this.currentIndex += 1
+      },
+      prev: function() {
+        this.currentIndex -= 1
+      }
+    },
+  
+    computed: {
+      currentImg: function() {
+        return this.images[Math.abs(this.currentIndex) % this.images.length];
+      }
+    }
+  
 }
 </script>

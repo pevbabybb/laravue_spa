@@ -155,11 +155,11 @@
                    
                         <div>
                             <my-switch v-model="switchValue4"/> 
-                            <p style="display: inline-block" title="#">Anniversary of special day</p>
+                            <p style="display: inline-block" title="#">Anniversary of birthday</p>
                         </div>
                         <div>
                             <my-switch v-model="switchValue5"/> 
-                            <p style="display: inline-block" title="#">Anniversary of birth day</p>
+                            <p style="display: inline-block" title="#">Anniversary of deathday</p>
                             </div>     
                                      
                         
@@ -661,6 +661,10 @@ export default {
 }
 </script>
 <style >
+.img{
+    max-width:600px;
+    max-height: 600px;
+}
 
 @import url('https://use.fontawesome.com/releases/v5.13.0/css/all.css');
 

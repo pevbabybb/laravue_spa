@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Home from './Home.vue';
+import Task from './Task.vue';
 import store from './store';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
@@ -16,4 +17,13 @@ Vue.use(BootstrapVue);
     render: h => h(Home)
 
 });
+
+new Vue({
+    el:'#display',
+    store,
+    render: h=> h(Task)
+
+});
+
+
 Vue.config.productionTip = false
