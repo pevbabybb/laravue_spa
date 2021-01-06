@@ -18,6 +18,8 @@ class CreateSettingsTable extends Migration
             $table->boolean('enable_specialDay')->default('1');
             $table->boolean('enable_birth_event')->default('1');
             $table->boolean('enable_death_event')->default('1');
+            $table->text('transition');
+            $table->integer('duration');
             $table->timestamps();
            
            

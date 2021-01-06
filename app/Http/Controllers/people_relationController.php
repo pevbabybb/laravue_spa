@@ -104,10 +104,11 @@ class people_relationController extends Controller
     {
         if($relation ->delete()){
             
-            return response()->json([
-                'message' =>'delete relation success',
-                'status_code'=>'200',
-            ],200);
+            // return response()->json([
+            //     'message' =>'delete relation success',
+            //     'status_code'=>'200',
+            // ],200);
+            return redirect()->back();
         }else{
             return response()->json([
                 'message' =>'delete relation erorr , try again',

@@ -1,16 +1,20 @@
 <template>
-    <div >    
-        <transition-group name='fade' tag='div'>
-              
-              <div v-for="i in [currentIndex]" :key='i'>
-               <div :class="`frame${frame}`">
-           
-                  <img class="display " :src="`${$store.state.serverPath}/storage/${currentImg} `" />
-               </div>
-            </div>
-           
-        </transition-group>
-    </div>
+
+  <div class="">
+   <transition-group  class="content__list" :name="transition">
+      
+        <div v-for="i in [currentIndex]" :key='i'>
+            <img class="img1" :src="`${$store.state.serverPath}/storage/${currentImg}`"  
+            :style=" `border-image: url(${$store.state.serverPath}/storage/worship_image/${frame}.jpg)  100 round `"
+            />
+          
+      </div>
+      
+  </transition-group>
+  </div>  
+   
+  
+    
    
 </template>
 <script>
@@ -18,12 +22,14 @@ import * as taskService from './services/task_service';
 import * as settingService from './services/setting_service';
 import * as relationService from './services/relation_service';
 
+
 export default {
     name:'display',
     components:{},
     data() {
         return{
             tasks:[],
+            times:[],
             settings:[],
             relations:[], // store the data from server
             timer:null,
@@ -37,6 +43,7 @@ export default {
                1,
              ],
            },
+           image:[],
           
             color:[
               1,
@@ -44,7 +51,10 @@ export default {
 
             today:'',
             time:'1998-12-12',
-            test1:1,
+            test1:3000,
+            sliceDuration:'',
+            transition:'',
+           
             
         };
 
@@ -90,6 +100,8 @@ export default {
             const response = await relationService.loadRelation();
             console.log(response);
             this.relations = response.data.data;
+
+
             console.log(this.relations);
             
         },
@@ -98,12 +110,18 @@ export default {
             const response = await settingService.loadSetting();
             console.log(response);
             this.settings = response.data.data;
+           
+            this.transition = this.settings[0].transition;
+           
             console.log(this.settings);
         },
-        startSlide: function() {
-            this.timer = setInterval(this.next,4000);
+        startSlide: async function() {
+            const time = await settingService.loadSetting();
+             this.sliceDuration = this.settings[0].duration * 1000; 
+              this.times = time.data.data;
+            this.timer = setInterval(this.next, this.sliceDuration);
         },
-
+        
         next: function(){
             this.currentIndex += 1;
         },
@@ -122,11 +140,40 @@ export default {
        
   },
         
-
+//  this.image.push(this.tasks[i].image);
     computed: {
          currentImg: function() {
-        return this.tasks[Math.abs(this.currentIndex) % this.tasks.length].image;
+           if(this.special_day1 == false || this.relations.length == 0) 
+        {
+          return this.tasks[Math.abs(this.currentIndex) % this.tasks.length].image;
+        }else{
+          for( var i=0; i <this.tasks.length;i++ )
+              {
+                for(var j =0; j < this.relations.length;j++)
+                {
+                  if(this.tasks[i].id == this.relations[j].user1 
+                  ||this.tasks[i].id == this.relations[j].user2 )
+                  {
+                    this.image.push(this.tasks[i].image)
+                  }
+                }
+              }
+          return  this.image[Math.abs(this.currentIndex) % this.image.length];
+        }
       },
+        special_day1: function(){
+          if(this.settings[0].enable_specialDay ==1 )
+          {
+            for( var i = 0; i<this.relations.length; i ++)
+            {
+              if(this.relations[i].special_day.slice(5,10) == this.today)
+              {
+              
+                return true;
+              }
+            }return false;
+          }return false;
+        },
       getTime: function(){
           return this.tasks[Math.abs(this.currentIndex) % this.tasks.length].date_of_birth.slice(5,10); 
         },
@@ -139,6 +186,19 @@ export default {
           if(this.tasks[Math.abs(this.currentIndex) % this.tasks.length].date_of_death.slice(5,10) == this.today)
           return true;
           return false;
+        },
+        checkSpecialDay: function(){
+         for( var i = 0; i<this.relations.length; i ++)
+         {
+           if(this.relations[i].special_day.slice(5,10) == this.today)
+           {
+             if(this.relations[i].user1 == this.tasks[Math.abs(this.currentIndex) % this.tasks.length].id
+             ||this.relations[i].user2 == this.tasks[Math.abs(this.currentIndex) % this.tasks.length].id  )
+             {
+               return true;
+             }
+           }
+         }return false;
         },
         death_active: function(){
           if((this.tasks[Math.abs(this.currentIndex) % this.tasks.length].enable_death_event == 1) 
@@ -159,14 +219,16 @@ export default {
           }else if((this.birth_active == true) && (this.checkBirth == true ))
           {
             return 2;
-          }return 0;
-          
-          
-
+          }
+          return 0;
+        },
+        duration: function(){
+          // 
+         return this.settings[0].duration*1000;
         },
         test:function(){
          
-          return 0;
+          return this.settings[0].duration*1000;
        
         },
 
@@ -181,10 +243,15 @@ export default {
 
 </script>
 <style>
-    img {
-      min-width: 700px;
-      min-height:950px;
-    }
+  
+   .img1{
+       min-height:100vh;
+    min-width:100vw;
+   border: 5vh solid transparent ;
+     
+    
+   }
+   
 
  body {
    display: inline-block;
@@ -195,24 +262,71 @@ export default {
 
 
 
-
-
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: all 0.01ms ease;
-  overflow: hidden;
-  visibility: visible;
-  position: absolute;
-  width:100%;
-  opacity: 1;
+.company {
+  backface-visibility: hidden;
+  z-index: 1;
 }
-.fade-enter,
-.fade-leave-to {
-  visibility: hidden;
-  width:100%;
+
+/* moving */
+.company-move {
+  transition: all 600ms ease-in-out 50ms;
+}
+
+/* appearing */
+.company-enter-active {
+  transition: all 400ms ease-out;
+}
+
+/* disappearing */
+.company-leave-active {
+  transition: all 200ms ease-in;
+  position: absolute;
+  z-index: 0;
+}
+
+/* appear at / disappear to */
+.company-enter,
+.company-leave-to {
   opacity: 0;
 }
+
+
+.slide-fade-enter-active {
+  transition: all 4s ease;
+}
+.slide-fade-leave-active {
+  transition: all 4s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.rotate-enter { transform: perspective(500px) rotate3d(0, 1, 0, 90deg); }
+.rotate-enter-active,
+.rotate-leave-active { transition: 1s; }
+.rotate-leave-to { transform: perspective(500px) rotate3d(0, 1, 0, -90deg); }
+
+
+.slide1-enter {
+  opacity: 0;
+  transform: scale3d(2, 0.5, 1) translate3d(400px, 0, 0);
+}
+
+.slide1-enter-to { transform: scale3d(1, 1, 1); }
+.slide1-enter-active,
+.slide1-leave-active { transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+.slide1-leave { transform: scale3d(1, 1, 1); }
+
+.slide1-leave-to {
+  opacity: 0;
+  transform: scale3d(2, 0.5, 1) translate3d(-400px, 0, 0);
+}
+
+
+
+
 
 .prev, .next {
   cursor: pointer;
@@ -242,88 +356,5 @@ export default {
 
 
 
-.frame0 {
-  background-color:#ddc;
-  border:solid 5vmin pink;
-  border-bottom-color: blue;
-  border-left-color:blue;
-  border-radius:2px;
-  border-right-color:blue;
-  border-top-color:blue;
-  box-shadow:0 0 5px 0 rgba(0,0,0,.25) inset, 0 5px 10px 5px rgba(0,0,0,.25);
-  box-sizing:border-box;
-  display:inline-block;
- 
-  height:1024px;
-  width: 768px;
- 
-  position:relative;
-  text-align:center;
-}
   
-  .frame::before {
-    border-radius:2px;
-    bottom:-2vmin;
-    box-shadow:0 2px 5px 0 rgba(0,0,0,.25) inset;
-    content:"";
-    left:-2vmin;
-    position:absolute;
-    right:-2vmin;
-    top:-2vmin;
-  }
-
-  .frame::after {
-    border-radius:2px;
-    bottom:-2.5vmin;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.25);
-    content:"";
-    left:-2.5vmin;
-    position:absolute;
-    right:-2.5vmin;
-    top:-2.5vmin;
-  }
-
-
- /* frame 1 */
-  .frame1{
-  background-color:#ddc;
-  border:solid 5vmin #eee;
-  border-bottom-color:#fff;
-  border-left-color:#eee;
-  border-radius:2px;
-  border-right-color:#eee;
-  border-top-color:#ddd;
-  box-shadow:0 0 5px 0 rgba(0,0,0,.25) inset, 0 5px 10px 5px rgba(0,0,0,.25);
-  box-sizing:border-box;
-  display:inline-block;
- 
-  height:80vh;
-  width: 400px;
- 
-  position:relative;
-  text-align:center;
-}
-  
-  .frame1::before {
-    border-radius:2px;
-    bottom:-2vmin;
-    box-shadow:0 2px 5px 0 rgba(0,0,0,.25) inset;
-    content:"";
-    left:-2vmin;
-    position:absolute;
-    right:-2vmin;
-    top:-2vmin;
-  }
-
-  .frame1::after {
-    border-radius:2px;
-    bottom:-2.5vmin;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.25);
-    content:"";
-    left:-2.5vmin;
-    position:absolute;
-    right:-2.5vmin;
-    top:-2.5vmin;
-  }
-
-</style>
+  </style>

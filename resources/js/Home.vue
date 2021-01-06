@@ -1,11 +1,11 @@
 <template>
-    <main>
-        <Header style="display:none"/>
+    <main >
+        
         <div id="layoutSidenav" >
           
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid">
+                    <div  class="container-fluid">
                         <h1 class="mt-10 pt-3" style ="color: #212529">UIT </h1>
                         
  
@@ -24,33 +24,33 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th ><b>No.</b></th>
-                                        <th><b>Name</b></th>
-                                        <th  style="text-align:center"><b>Image</b></th>
-                                        <th><b>Birthday/Deathday</b></th>
-                                        <th ><b>Options</b></th>
+                                        <th class="thNo"><b>No.</b></th>
+                                        <th class="thName"><b>Name</b></th>
+                                        <th class="thImage"  style="text-align:center"><b>Image</b></th>
+                                        <th class="thDay"><b>Birthday/Deathday</b></th>
+                                        <th class="thOption"><b>Options</b></th>
                                         
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="(task,index) in tasks" :key="index">
-                                        <td>{{index+1}}</td>
-                                        <td>{{task.name}}</td>
+                                        <td class="thNo">{{index+1}}</td>
+                                        <td class="thName">{{task.name}}</td>
                                         
-                                        <td>
-                                          <img :src="`${$store.state.serverPath}/storage/${task.image}`" :alt="task.name"
+                                        <td class="img2">
+                                          <img :src="`${$store.state.serverPath}/storage/${task.image}` " :alt="task.name"
                                           class="table-image"/>
                                         </td>
-                                        <td>
+                                        <td class="thDay">
                                            <span> {{task.date_of_birth}} </span>
                                            <hr>
                                            <span>{{task.date_of_death}}</span>
                                            
                                         </td>
-                                        <td>
+                                        <td class="thOption">
                                            
                                             <button class="btn btn-danger btn-sm" v-on:click="deleteTask(task)" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                                            <button class="btn btn-primary btn-sm" v-on:click="editTask(task)" title="Update"><i class="fas fa-cog"></i></i></button>
+                                            <button class="btn btn-primary btn-sm" v-on:click="editTask(task)" title="Update"><i class="fas fa-cog"></i></button>
                                             <button class="btn btn-info btn-sm" v-on:click="addRelation(task)" title="Relation Setting"><i class="fas fa-users-cog"></i></button>
                                         </td>
                                     </tr>
@@ -131,12 +131,30 @@
                                 </div>      
                            
                             </div>
+
+                            <div style="margin-bottom:10px">
+                                <select v-model="transition_seleted">s
+                                    <option>default</option>
+                                    <option>slide-fade</option>
+                                    <option>rotate</option>
+                                    <option>slide1</option>
+                            </select>
+                            <span style="margin-left:20px ">transition</span>
+                            <div style="margin-right:240px" >
+                            
+                               
+                                <b-form-spinbutton id="" v-model="duration" min="0" max="6" ></b-form-spinbutton>
+                                
+                                
+                            </div>
+                             </div>
+                            
                              
                         <button type="button" class="btn btn-default" v-on:click="cancelSetingModal">Cancel</button>
                         <button type="submit" class="btn btn-primary" >Save</button>       
 
                             
-                            
+                       
                         </div>
                     </form>
                       
@@ -177,19 +195,19 @@
             
             </b-modal>
 
-            <b-modal ref="relationDataModal" hide-footer title="relation">
+            <b-modal ref="relationDataModal" hide-footer title="Relation">
                 <div class="d-block ">
                 <form > 
                         <div class="form-group">
                           
                          <table class="table">
                                 <thead>
-                                    <tr>
-                                        <td>No.</td>
-                                        <td>Name .1</td>
-                                        <td>Name .2</td>
-                                        <td>Special day</td>
-                                        <td>Option</td>
+                                    <tr >
+                                        <td ><b>No.</b></td>
+                                        <td><b>Name .1</b></td>
+                                        <td><b>Name .2</b></td>
+                                        <td><b>Special day</b></td>
+                                        <td><b>Option</b></td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -214,19 +232,19 @@
            
             
             </b-modal>           
-            <b-modal ref="relationModal" hide-footer title="add relation">
+            <b-modal ref="relationModal" hide-footer title="Add relation">
                 <div class="d-block ">
                 <form v-on:submit.prevent="createRelation"> 
                         <div class="form-group">
                             <div class="inline-block">
                                 <input type="date" v-model="relationData.special_day ">
-                                <span> special day</span>
+                                <span><b>Special day</b> </span>
                             </div> 
                          <table class="table">
                                 <thead>
                                     <tr>
-                                        <td>#</td>
-                                        <td>name</td>
+                                        <td><b>#</b></td>
+                                        <td><b>Name</b></td>
                                         
                                        
                                     </tr>
@@ -321,7 +339,8 @@ export default {
            
             errors:{},
             relExist:false,
-
+            transition_seleted:'',
+            duration:'',
             
             
         }
@@ -376,6 +395,8 @@ export default {
                 const response = await settingService.loadSetting();
                 console.log(response);
                 this.settings = response.data.data;
+                this.transition_seleted = this.settings[0].transition;
+                this.duration = this.settings[0].duration;
                 if(this.settings[0].enable_specialDay== 0)
                 {
                     this.switchValue1 = false;
@@ -397,8 +418,10 @@ export default {
                     this.switchValue3 = true;
                 }
                 
+                
                 console.log(this.settings);
             } catch (error) {
+               
                 this.flashMessage.error({
                     message:'event error',
                     time:5000
@@ -502,7 +525,7 @@ export default {
             formData.append('name',this.taskData.name);
             formData.append('image',this.taskData.image);
             formData.append('date_of_birth', this.taskData.birthDay);
-            formData.append('date_of_death', this.taskData.birthDay);
+            formData.append('date_of_death', this.taskData.deathDay);
             
             
             try{
@@ -629,6 +652,9 @@ export default {
             formData.append('enable_specialDay',this.switchValue1);
             formData.append('enable_birth_event',this.switchValue2);
             formData.append('enable_death_event',this.switchValue3);
+            formData.append('transition',this.transition_seleted);
+            formData.append('duration',this.duration);
+            
             formData.append('_method','put');
             this.flashMessage.success({
                     message: ' setting default updated !',
@@ -655,15 +681,23 @@ export default {
                 
                
             
-    }
+    },
+
     
     
 }
+
+
 </script>
 <style >
-.img{
-    max-width:600px;
-    max-height: 600px;
+.img2{
+    width: 20%;
+    height: 100px;
+    
+}
+
+b {
+    color : #9D65C9;
 }
 
 @import url('https://use.fontawesome.com/releases/v5.13.0/css/all.css');
@@ -694,9 +728,12 @@ export default {
 }
 
 .wrap-table100 {
-  width: 1170px;
+  width: 100%;
 }
-
+body{
+    
+    width: 100%;
+}
 table {
   border-spacing: 1;
   border-collapse: collapse;
@@ -807,4 +844,37 @@ modal-backdrop {
     
     background-color: rgba(0,0,0,0.5);
 }
+.thNO{
+
+ width: 5%;
+}
+.thName{
+ width: 10%; 
+}
+.thImage{
+ width: 15%;
+}
+.thDay{
+ width: 25%;
+}
+.thOption{
+ width: 20%%;   
+}
+@media screen and (max-width: 600px) {
+  .thDay, .thNo,.thName {
+   display: none; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
+@media screen and (min-width:600px max-width:700 px){
+     .thDay,.tName {
+   display: none; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
+@media screen and (max-width: 768px) {
+  .thNo {
+   display: none; /* The width is 100%, when the viewport is 800px or smaller */
+  }
+}
+    
+
 </style>

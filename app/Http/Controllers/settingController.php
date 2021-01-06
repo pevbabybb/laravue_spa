@@ -75,6 +75,8 @@ class settingController extends Controller
         $setting->enable_specialDay = $request->enable_specialDay;
         $setting->enable_birth_event =$request->enable_birth_event;
         $setting->enable_death_event =$request->enable_death_event;
+        $setting->transition = $request->transition;
+        $setting->duration =$request->duration;
         $setting->save();
     }
 

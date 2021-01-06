@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\task;
+use App\Events\imageEvent;
 
 class taskController extends Controller
 {
@@ -45,14 +46,18 @@ class taskController extends Controller
         $task ->date_of_birth =$request->date_of_birth;
         $task ->date_of_death =$request->date_of_death;
         $path = $request->file('image')->store('task_image');
-
+        
         $task->image = $path;
         if($task ->save()){
+            event(
+                $e = new imageEvent($task)
+            );
             return response() ->json($task,200);
         }else{
             return response() ->json($task,500);
         }
-
+        
+        
         
 
         dd($request->all());
