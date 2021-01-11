@@ -140,7 +140,7 @@
                                     <option>slide1</option>
                             </select>
                             <span style="margin-left:20px ">transition</span>
-                            <div style="margin-right:240px" >
+                            <div style="margin-right:250px" >
                             
                                
                                 <b-form-spinbutton id="" v-model="duration" min="0" max="6" ></b-form-spinbutton>
@@ -700,7 +700,7 @@ b {
     color : #9D65C9;
 }
 
-@import url('https://use.fontawesome.com/releases/v5.13.0/css/all.css');
+/* @import url('https://use.fontawesome.com/releases/v5.13.0/css/all.css'); */
 
 .limiter {
   width: 100%;
@@ -849,27 +849,29 @@ modal-backdrop {
  width: 5%;
 }
 .thName{
- width: 10%; 
+ width: 20%; 
 }
 .thImage{
- width: 15%;
-}
+
+ width:25% ;
+ }
 .thDay{
  width: 25%;
 }
 .thOption{
- width: 20%%;   
+ width: 25%;   
 }
 @media screen and (max-width: 600px) {
   .thDay, .thNo,.thName {
    display: none; /* The width is 100%, when the viewport is 800px or smaller */
   }
 }
-@media screen and (min-width:600px max-width:700 px){
-     .thDay,.tName {
+@media screen and (max-width: 691px) {
+  .thDay, .thNo {
    display: none; /* The width is 100%, when the viewport is 800px or smaller */
   }
 }
+
 @media screen and (max-width: 768px) {
   .thNo {
    display: none; /* The width is 100%, when the viewport is 800px or smaller */
